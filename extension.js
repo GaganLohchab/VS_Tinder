@@ -1,7 +1,7 @@
 
 const vscode = require('vscode');
 import { authenticate } from "./src/authenticate";
-import { languageIdMap } from "./languageIdMap";
+import { languageIdMap } from "./src/languageIdMap";
 import { SidebarProvider } from "./SidebarProvider";
 import { SnippetStatus } from "./SnippetStatus";
 import { Util } from "./src/Util";
