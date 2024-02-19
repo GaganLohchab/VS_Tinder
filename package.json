@@ -1,8 +1,13 @@
 {
   "name": "vstinder",
   "displayName": "VS Tinder",
+  "icon": "media/icon.png",
   "description": "An app that mathches programmers by allowing then to swipe at code.",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GaganLohchab/VS_Tinder"
+  },
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -10,12 +15,32 @@
     "Other"
   ],
   "activationEvents": [],
-  "main": "./extension.js",
+  "main": "./src/extension.js",
   "contributes": {
-    "commands": [{
-      "command": "vstinder.helloWorld",
-      "title": "Hello World"
-    }]
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vsinder-sidebar-view",
+          "title": "VSinder",
+          "icon": "./src/media/heart.svg"
+        }
+      ]
+    },
+    "views": {
+      "vsinder-sidebar-view": [
+        {
+          "type": "webview",
+          "id": "vsinder-sidebar",
+          "name": "VSinder",
+          "icon": "./src/media/heart.svg",
+          "contextualTitle": "VSinder"
+        }
+      ]
+    }
+    
+  
+    
+    
   },
   "scripts": {
     "lint": "eslint .",
