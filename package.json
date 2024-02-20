@@ -4,6 +4,7 @@
   "icon": "media/icon.png",
   "description": "An app that mathches programmers by allowing then to swipe at code.",
   "version": "0.0.1",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/GaganLohchab/VS_Tinder"

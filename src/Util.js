@@ -1,8 +1,12 @@
 const vscode = require("vscode");
-const { accessTokenKey, refreshTokenKey } = require("./constants");
+const { accessTokenKey, refreshTokenKey } = require("./constants.js");
 
-export class Util {
-  static globalState;
+// Assuming that the equivalent functionality is to be achieved without the types and decorators provided by TypeScript
+
+// The import statements need to be converted to require statements or similar depending on the environment
+class Util {
+  static globalState; // Removed the TypeScript type annotation
+
   static getRefreshToken() {
     return this.globalState.get(refreshTokenKey) || "";
   }
@@ -18,3 +22,6 @@ export class Util {
     );
   }
 }
+
+module.exports = { Util };
+

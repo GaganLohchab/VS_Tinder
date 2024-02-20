@@ -1,10 +1,10 @@
 
 const vscode = require('vscode');
-import { authenticate } from "./src/authenticate";
-import { languageIdMap } from "./src/languageIdMap";
-import { SidebarProvider } from "./SidebarProvider";
-import { SnippetStatus } from "./SnippetStatus";
-import { Util } from "./src/Util";
+import { authenticate } from "./src/authenticate.js";
+import { languageIdMap } from "./src/languageIdMap.js";
+import { SidebarProvider } from "./SidebarProvider.js";
+import { SnippetStatus } from "./src/SnippetStatus.js";
+import { Util } from "./src/Util.js";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed

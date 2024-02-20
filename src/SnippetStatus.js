@@ -1,7 +1,8 @@
 // import { window, StatusBarItem, StatusBarAlignment } from "vscode";
+// import("vscode").StatusBarItem;
 const { window, StatusBarAlignment } = require('vscode');
 
-export class SnippetStatus {
+class SnippetStatus {
     static snippetStatus;
     static storyId;
     item;
@@ -22,3 +23,6 @@ export class SnippetStatus {
       }
     };
   }
+  module.exports = { SnippetStatus };
+
+  
