@@ -2,7 +2,7 @@
 const vscode = require('vscode');
 import { authenticate } from "./src/authenticate.js";
 import { languageIdMap } from "./src/languageIdMap.js";
-import { SidebarProvider } from "./SidebarProvider.js";
+// import { SidebarProvider } from "./SidebarProvider.js";
 import { SnippetStatus } from "./src/SnippetStatus.js";
 import { Util } from "./src/Util.js";
 
@@ -97,7 +97,7 @@ export function deactivate() {}
 
 // import SidebarProvider  from "./sidebar/SidebarProvider";
 
-
+////////
 /**
 //ram {vscode.ExtensionContext} context
  */
