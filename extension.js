@@ -2,22 +2,24 @@
 const vscode = require('vscode');
 import { authenticate } from "./src/authenticate.js";
 import { languageIdMap } from "./src/languageIdMap.js";
-// import { SidebarProvider } from "./SidebarProvider.js";
+import { SidebarProvider } from "./src/SidebarProvider.js";
 import { SnippetStatus } from "./src/SnippetStatus.js";
 import { Util } from "./src/Util.js";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context) {
   Util.globalState = context.globalState;
   SnippetStatus.createSnippetStatus();
   const sidebarProvider = new SidebarProvider(context.extensionUri);
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider(
-      "vsinder-sidebar",
-      sidebarProvider
-    )
-  );
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider('sidebar', sidebarProvider)
+    );
+
+    vscode.commands.registerCommand('extension.login', () => {
+        // Handle the login action here
+        vscode.window.showInformationMessage('Login clicked!');
+    });
 
   context.subscriptions.push(
     vscode.commands.registerCommand("vsinder.authenticate", () => {
@@ -72,13 +74,13 @@ export function activate(context: vscode.ExtensionContext) {
       await vscode.commands.executeCommand(
         "workbench.view.extension.vsinder-sidebar-view"
       );
-      sidebarProvider._view?.webview.postMessage({
+      sidebarProvider._view.webview.postMessage({
         command: "new-code-snippet",
         data: {
           code: text,
           language:
             languageId in languageIdMap
-              ? languageIdMap[languageId as keyof typeof languageIdMap]
+              ? languageIdMap[languageId]
               : "auto",
           // theme: "vscode",
           fontFamily: "Fira Code",
@@ -91,6 +93,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+
+
 
 
 

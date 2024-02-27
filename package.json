@@ -37,11 +37,14 @@
           "contextualTitle": "VSinder"
         }
       ]
+    },
+    "commands": [
+      {
+        "command": "extension.login",
+        "title": "Login"
     }
-    
-  
-    
-    
+    ]
+     
   },
   "scripts": {
     "lint": "eslint .",
