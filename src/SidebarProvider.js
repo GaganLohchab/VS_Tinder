@@ -1,21 +1,17 @@
 const vscode = require("vscode");
-const { authenticate } = require("./authenticate.js");
-const { accessTokenKey, apiBaseUrl, refreshTokenKey } = require("./constants.js");
-// const { FlairProvider } = require("./FlairProvider");
-const { getNonce } = require("./getNonce.js");
-// const { mutation, mutationNoErr } = require("./mutation");
-// const { SnippetStatus } = require("./SnippetStatus");
-// const { SwiperPanel } = require("./SwiperPanel");
-const { Util } = require("./Util.js");
-// const { ViewCodeCardPanel } = require("./ViewCodeCardPanel");
+// import { getNonce } from './getNonce.js';
+const getNonce = require("./getNonce.js");
 
-class SidebarProvider {
+module.exports = class SidebarProvider {
   constructor(_extensionUri) {
     this._extensionUri = _extensionUri;
   }
 
-  resolveWebviewView(webviewView) {
+  // const YOUR_GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize?client_id=1141eb58b9ab1fc3ae89&redirect_uri=http://localhost:3001/auth/github/callback/callback&scope=user&state=random_string";
+
+  resolveWebviewView(webviewView, _context) {
     this._view = webviewView;
+    this._context = _context;
 
     webviewView.webview.options = {
       enableScripts: true,
@@ -23,119 +19,6 @@ class SidebarProvider {
     };
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
-
-    webviewView.webview.onDidReceiveMessage(async (data) => {
-      switch (data.type) {
-        // case "report":
-        //   const message = await vscode.window.showInputBox({
-        //     placeHolder: "why are you reporting this user?",
-        //   });
-        //   if (message) {
-        //     await mutationNoErr(`/report`, { message, ...data.value });
-        //     webviewView.webview.postMessage({
-        //       command: "report-done",
-        //       data,
-        //     });
-        //     vscode.window.showInformationMessage("Thank you for reporting!");
-        //   }
-        //   break;
-        // case "unmatch":
-        //   const y = await vscode.window.showInformationMessage(
-        //     `Are you sure you want to unmatch "${data.value.userName}"?`,
-        //     "Yes",
-        //     "No"
-        //   );
-        //   if (y === "Yes") {
-        //     try {
-        //       await mutation(`/unmatch`, { userId: data.value.userId });
-        //       webviewView.webview.postMessage({
-        //         command: "unmatch-done",
-        //         payload: {},
-        //       });
-        //       vscode.window.showInformationMessage(`You unmatched "${data.value.userName}"`);
-        //     } catch {}
-        //   }
-        //   break;
-        // case "send-tokens":
-        //   webviewView.webview.postMessage({
-        //     command: "init-tokens",
-        //     payload: {
-        //       accessToken: Util.getAccessToken(),
-        //       refreshToken: Util.getRefreshToken(),
-        //     },
-        //   });
-        //   break;
-        // case "logout":
-        //   await Util.globalState.update(accessTokenKey, "");
-        //   await Util.globalState.update(refreshTokenKey, "");
-        //   SwiperPanel.kill();
-        //   ViewCodeCardPanel.kill();
-        //   break;
-        // case "delete-account":
-        //   const y = await vscode.window.showInformationMessage(
-        //     "Are you sure you want to delete your account?",
-        //     "yes",
-        //     "no"
-        //   );
-        //   if (y === "yes") {
-        //     try {
-        //       await mutation("/account/delete", {});
-        //       await Util.globalState.update(accessTokenKey, "");
-        //       await Util.globalState.update(refreshTokenKey, "");
-        //       webviewView.webview.postMessage({
-        //         command: "account-deleted",
-        //         payload: {},
-        //       });
-        //       vscode.window.showInformationMessage("successfully deleted");
-        //       SwiperPanel.kill();
-        //       ViewCodeCardPanel.kill();
-        //     } catch {}
-        //   }
-        //   break;
-        // case "show-snippet-status":
-        //   SnippetStatus.show();
-        //   break;
-        // case "hide-snippet-status":
-        //   SnippetStatus.hide();
-        //   break;
-        // case "view-code-card":
-        //   ViewCodeCardPanel.createOrShow(this._extensionUri, data.value);
-        //   break;
-        // case "start-swiping":
-        //   SwiperPanel.createOrShow(this._extensionUri);
-        //   break;
-        case "login":
-          authenticate((payload) => {
-            webviewView.webview.postMessage({
-              command: "login-complete",
-              payload,
-            });
-          });
-          break;
-        case "onInfo":
-          if (!data.value) {
-            return;
-          }
-          vscode.window.showInformationMessage(data.value);
-          break;
-        case "onError":
-          if (!data.value) {
-            return;
-          }
-          vscode.window.showErrorMessage(data.value);
-          break;
-        case "tokens":
-          await Util.globalState.update(accessTokenKey, data.accessToken);
-          await Util.globalState.update(refreshTokenKey, data.refreshToken);
-          break;
-      }
-    });
-  }
-
-//   ${FlairProvider.getJavascriptMapString()}
-
-  revive(panel) {
-    this._view = panel;
   }
 
   _getHtmlForWebview(webview) {
@@ -143,48 +26,78 @@ class SidebarProvider {
       vscode.Uri.joinPath(this._extensionUri, "media", "reset.css")
     );
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "compiled/sidebar.js")
+      vscode.Uri.joinPath(this._extensionUri, "media", "main.js")
     );
-    const styleMainUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out", "compiled/sidebar.css")
-    );
-    const styleVSCodeUri = webview.asWebviewUri(
+    const stylesheetUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css")
     );
 
     const nonce = getNonce();
 
-    return `<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta http-equiv="Content-Security-Policy" content="default-src ${
-          apiBaseUrl.includes("https")
-            ? apiBaseUrl.replace("https", "wss")
-            : apiBaseUrl.replace("http", "ws")
-        } ${apiBaseUrl} https://x9lecdo5aj.execute-api.us-east-1.amazonaws.com; img-src https: data:; style-src 'unsafe-inline' ${
-      webview.cspSource
-    }; script-src 'nonce-${nonce}';">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${styleResetUri}" rel="stylesheet">
-				<link href="${styleVSCodeUri}" rel="stylesheet">
-        <link href="${styleMainUri}" rel="stylesheet">
-        <script nonce="${nonce}">
-            const apiBaseUrl = ${JSON.stringify(apiBaseUrl)};
-            const tsvscode = acquireVsCodeApi();
-            let accessToken = ${JSON.stringify(Util.getAccessToken())};
-            let refreshToken = ${JSON.stringify(Util.getRefreshToken())};
+    const githubAuthUrl =
+      "https://github.com/login/oauth/authorize?client_id=1141eb58b9ab1fc3ae89&redirect_uri=http://localhost:3001/auth/github/callback/callback&scope=user&state=random_string";
+
+    return `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link href="${styleResetUri}" rel="stylesheet">
+                <link href="${stylesheetUri}" rel="stylesheet">
+                <link href="${scriptUri}" rel="stylesheet">
+                <script nonce="${nonce}">
             <!-- Write your comments here  -->
             
-        </script>
-			</head>
-      <body>
-        <div id="root">
-        <button>Hello World</button></div>
-				<script nonce="${nonce}" src="${scriptUri}"></script>
-			</body>
-			</html>`;
+                </script>
+                <title>Login</title>
+                <style>
+                    button {
+                        positon: absolute;
+                        display: block;
+                        width: 90%;
+                        margin: 10px auto;
+                        padding: 10px 20px;
+                        background-color: #007acc;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                    h1 {
+                        margin-top: 30px;
+                        text-align: center;
+                        color: #007acc;
+                    }
+                </style>
+            </head>
+            <body>
+            <h1>Login to VSHunch</h1>
+            <button id="loginButton">Login with GitHub to get started</button>
+            <script nonce="${nonce}">
+                const vscode = acquireVsCodeApi();
+                const loginButton = document.getElementById('loginButton');
+                loginButton.addEventListener('click', () => {
+                    vscode.postMessage({
+                        command: 'login'
+                    });
+                    window.location.href = "${githubAuthUrl}";
+                });
+                
+                
+            </script>
+            </body>
+            </html>
+        `;
   }
-}
+};
 
-module.exports = { SidebarProvider };
+// #007acc
+// exports.module = { SidebarProvider };
+// const loginButton = document.getElementById('loginButton');
+//                 loginButton.addEventListener('click', () => {
+//                 console.log("Login button clicked!");
+//                 vscode.postMessage({
+//                 command: 'login'
+//                  });
+//                  });

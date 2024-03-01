@@ -1,6 +1,6 @@
-# vstinder README
+# vshunch README
 
-This is the README for your extension "vstinder". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "vshunch". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

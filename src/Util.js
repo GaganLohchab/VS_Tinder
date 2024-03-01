@@ -4,8 +4,9 @@ const { accessTokenKey, refreshTokenKey } = require("./constants.js");
 // Assuming that the equivalent functionality is to be achieved without the types and decorators provided by TypeScript
 
 // The import statements need to be converted to require statements or similar depending on the environment
-class Util {
-  static globalState = {}; // Removed the TypeScript type annotation
+module.exports = class Util {
+  // static globalState = {}; // Removed the TypeScript type annotation
+  // Util.globalState = {};
 
   static getRefreshToken() {
     return this.globalState.get(refreshTokenKey) || "";
@@ -23,5 +24,6 @@ class Util {
   }
 }
 
-module.exports = { Util };
 
+
+// module.exports = { Util };

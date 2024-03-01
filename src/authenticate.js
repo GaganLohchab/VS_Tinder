@@ -1,10 +1,16 @@
-import polka from "polka";
-import * as vscode from "vscode";
-import { refreshTokenKey, accessTokenKey, apiBaseUrl } from "./constants";
-import { Util } from "./Util";
+// import polka from "polka";
+// const vscode = require('vscode');
+// import { refreshTokenKey, accessTokenKey, apiBaseUrl } from "./constants.js";
+// import { Util } from "./Util.js";
+const polka = require("polka");
+const vscode = require('vscode');
+const { refreshTokenKey, accessTokenKey, apiBaseUrl } = require("./constants.js");
+// const constants = require('./constants.js');
+const { Util } = require("./Util.js");
+const SidebarProvider = require("./SidebarProvider");
 
 // https://github.com/shanalikhan/code-settings-sync/blob/master/src/service/github.oauth.service.ts
-export const authenticate = (fn) => {
+const authenticate = (fn) => {
   const app = polka();
   app.listen(54321);
   vscode.commands.executeCommand(
@@ -55,3 +61,5 @@ export const authenticate = (fn) => {
     app.server.close();
   });
 };
+
+module.exports = authenticate;

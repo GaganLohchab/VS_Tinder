@@ -7,6 +7,10 @@ function getNonce() {
     }
     return text;
   }
+
+  module.exports = getNonce;
+
+
   
-  module.exports = { getNonce };
+
   

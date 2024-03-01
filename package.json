@@ -1,50 +1,51 @@
 {
-  "name": "vstinder",
-  "displayName": "VS Tinder",
-  "icon": "media/icon.png",
+  "name": "vshunch",
+  "displayName": "VSHunch",
   "description": "An app that mathches programmers by allowing then to swipe at code.",
   "version": "0.0.1",
-  "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/GaganLohchab/VS_Tinder"
-  },
   "engines": {
     "vscode": "^1.86.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:vshunch-sidebar-view",
+  "onCommand:vshunch.authenticate"
+  ],
   "main": "./extension.js",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "vsinder-sidebar-view",
-          "title": "VSinder",
-          "icon": "./src/media/heart.svg"
+          "id": "vshunch-sidebar-view",
+          "title": "VSHunch",
+          "icon": "./media/heart.svg"
         }
       ]
     },
     "views": {
-      "vsinder-sidebar-view": [
+      "vshunch-sidebar-view": [
         {
           "type": "webview",
-          "id": "vsinder-sidebar",
-          "name": "VSinder",
-          "icon": "./src/media/heart.svg",
-          "contextualTitle": "VSinder"
+          "id": "vshunch-sidebar-view",
+          "name": "VSHunch",
+          "icon": "./media/heart.svg",
+          "contextualTitle": "VSHunch"
         }
       ]
     },
     "commands": [
       {
-        "command": "extension.login",
-        "title": "Login"
-    }
+        "command": "vshunch.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "vshunch.authenticate",
+        "title": "authenticate",
+        "category": "VSHunch"
+      }
     ]
-     
   },
   "scripts": {
     "lint": "eslint .",
@@ -52,12 +53,15 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.86.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
+    "@types/vscode": "^1.86.0",
+    "@vscode/test-cli": "^0.0.6",
+    "@vscode/test-electron": "^2.3.9",
     "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
-    "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.9"
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "polka": "^0.5.2"
   }
 }
