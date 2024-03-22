@@ -24,6 +24,7 @@ function activate(context) {
 	
 
 	console.log('Congratulations, your extension "vshunch" is now active!');
+	
 
 	// let disposable = vscode.commands.registerCommand('vshunch.helloWorld', function () {
 		

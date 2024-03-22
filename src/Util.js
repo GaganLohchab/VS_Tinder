@@ -5,6 +5,9 @@ const { accessTokenKey, refreshTokenKey } = require("./constants.js");
 
 // The import statements need to be converted to require statements or similar depending on the environment
 module.exports = class Util {
+  constructor() {
+    this.globalState = {};
+  }
   // static globalState = {}; // Removed the TypeScript type annotation
   // Util.globalState = {};
 

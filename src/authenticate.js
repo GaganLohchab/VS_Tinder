@@ -25,6 +25,8 @@ const authenticate = (fn) => {
       return;
     }
 
+    
+
     await Util.globalState.update(accessTokenKey, accessToken);
     await Util.globalState.update(refreshTokenKey, refreshToken);
     fn({ accessToken, refreshToken });
@@ -54,6 +56,7 @@ const authenticate = (fn) => {
               margin: 0;
             }
           </style>
+          
       </body>
     </html>
     `);
