@@ -1,6 +1,8 @@
 const vscode = require("vscode");
 // import { getNonce } from './getNonce.js';
 const getNonce = require("./getNonce.js");
+const { Util } = require("./Util.js");
+const { accessTokenKey, apiBaseUrl, refreshTokenKey } = require("./constants.js");
 
 module.exports = class SidebarProvider {
   constructor(_extensionUri) {
@@ -42,12 +44,20 @@ module.exports = class SidebarProvider {
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
+                <meta http-equiv="Content-Security-Policy" content="default-src ${
+                  apiBaseUrl.includes("https")
+                    ? apiBaseUrl.replace("https", "wss")
+                    : apiBaseUrl.replace("http", "ws")
+                } ${apiBaseUrl} https://x9lecdo5aj.execute-api.us-east-1.amazonaws.com; img-src https: data:; style-src 'unsafe-inline' ${
+              webview.cspSource
+              }; script-src 'nonce-${nonce}';">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link href="${styleResetUri}" rel="stylesheet">
                 <link href="${stylesheetUri}" rel="stylesheet">
                 <link href="${scriptUri}" rel="stylesheet">
                 <script nonce="${nonce}">
-            <!-- Write your comments here  -->
+                
+                <!-- Write your comments here  -->
             
                 </script>
                 <title>Login</title>
@@ -74,46 +84,16 @@ module.exports = class SidebarProvider {
             <body>
             <h1>Login to VSHunch</h1>
             <button id="loginButton">Login with GitHub to get started</button>
-            <script nonce="${nonce}">
-            const vscode = acquireVsCodeApi();
-                const loginButton = document.getElementById('loginButton');
-                loginButton.addEventListener('click', () => {
-                    vscode.postMessage({
-                        command: 'login'
-                    });
-                    window.location.href = "${githubAuthUrl}";
-
-                    const authWindow = window.open(githubAuthUrl, '_blank', 'width=600,height=600');
-
-    // Listen for changes in the authentication window's URL
-    const interval = setInterval(() => {
-        if (authWindow.closed) {
-            clearInterval(interval); // Stop checking once the window is closed
-        } else if (authWindow.closed && authWindow.location.href === githubAuthUrl) {
-            // If the authentication window was closed without any redirection (no authentication)
-            vscode.postMessage({
-                command: 'showMessage',
-                text: 'Login failed'
-            });
-        }
-    }, 1000);
-                });
-                
-                
-                
-            </script>
+            <script nonce="${nonce}" src="${scriptUri}"></script>
+            
             </body>
             </html>
         `;
   }
 };
 
-// #007acc
-// exports.module = { SidebarProvider };
-// const loginButton = document.getElementById('loginButton');
-//                 loginButton.addEventListener('click', () => {
-//                 console.log("Login button clicked!");
-//                 vscode.postMessage({
-//                 command: 'login'
-//                  });
-//                  });
+
+            // const apiBaseUrl = ${JSON.stringify(apiBaseUrl)};
+            //     const tsvscode = acquireVsCodeApi();
+            //     let accessToken = ${JSON.stringify(Util.getAccessToken())};
+            //     let refreshToken = ${JSON.stringify(Util.getRefreshToken())};
