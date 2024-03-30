@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 // import { getNonce } from './src/getNonce';
-var SidebarProvider = require("./src/SidebarProvider");
-var authenticate = require("./src/authenticate");
+var SidebarProvider = require("./SidebarProvider");
+var authenticate = require("./authenticate");
 /**
  * @param {vscode.ExtensionContext} context
  */
@@ -18,6 +18,8 @@ function activate(context) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand("vshunch.authenticate", () => {
+			console.log("sex")
+		vscode.window.showInformationMessage('Hello World from VSHunch!');
 		  authenticate(() => {});
 		})
 	  );
@@ -34,10 +36,14 @@ function activate(context) {
 	// context.subscriptions.push(disposable);
 }
 
+function authenticateUser(url) {
+	vscode.window.showInformationMessage('Hello World from VSHunch!');
+}
 
 function deactivate() {}
 
 module.exports = {
 	activate,
-	deactivate
+	deactivate,
+	authenticateUser
 }
