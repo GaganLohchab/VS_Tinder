@@ -13,7 +13,7 @@
     "onView:vshunch-sidebar-view",
     "onCommand:vshunch.authenticate"
   ],
-  "main": "./extension.js",
+  "main": "./src/extension.js",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
