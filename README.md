@@ -1,6 +1,6 @@
 # vshunch README
 
-This is the README for your extension "vshunch". After writing up a brief description, we recommend including the following sections.
+A dating extension for programmers where you swipe on code.
 
 ## Features
 
