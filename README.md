@@ -1,4 +1,4 @@
-# vshunch README
+# vshunch
 
 A dating extension for programmers where you swipe on code.
 
